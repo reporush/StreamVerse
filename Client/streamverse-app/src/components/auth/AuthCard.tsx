@@ -1,3 +1,4 @@
+import Image from "next/image";
 import {
   Card,
   CardContent,
@@ -27,12 +28,15 @@ export function AuthCard({
 }: AuthCardProps) {
   return (
     <div className="flex h-screen flex-col items-center justify-center bg-background">
-      <Link href="/" className="mb-12 text-6xl font-bold text-primary">
-        StreamVerse
+      <Link href="/" className="mb-8 flex flex-col items-center">
+        <Image src="/logo.svg" alt="StreamVerse" width={80} height={80} />
+        <span className="mt-4 text-4xl font-bold text-foreground">
+          StreamVerse
+        </span>
       </Link>
       <Card className="w-full max-w-md">
-        <CardHeader>
-          <CardTitle>{title}</CardTitle>
+        <CardHeader className="text-center">
+          <CardTitle className="text-3xl">{title}</CardTitle>
           <CardDescription className="text-muted-foreground">
             {description}
           </CardDescription>

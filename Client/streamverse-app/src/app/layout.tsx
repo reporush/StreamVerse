@@ -7,6 +7,10 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "StreamVerse - Live Streaming Platform",
   description: "Watch live streams, VODs, and chat with your favorite creators.",
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/logo.svg",
+  },
 };
 
 export default function RootLayout({

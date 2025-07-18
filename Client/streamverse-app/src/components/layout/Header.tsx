@@ -1,4 +1,5 @@
 
+import Image from "next/image";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -8,8 +9,9 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-10 flex h-16 items-center justify-between border-b bg-card px-4 md:px-6">
-      <Link href="/" className="text-2xl font-bold text-primary">
-        StreamVerse
+      <Link href="/" className="flex items-center gap-2">
+        <Image src="/logo.svg" alt="StreamVerse" width={40} height={40} />
+        <span className="text-2xl font-bold text-primary">StreamVerse</span>
       </Link>
       <nav>
         {isAuthenticated ? (
