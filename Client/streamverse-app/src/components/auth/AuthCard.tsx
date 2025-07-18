@@ -26,7 +26,10 @@ export function AuthCard({
   footerLinkText,
 }: AuthCardProps) {
   return (
-    <div className="flex h-screen items-center justify-center bg-background">
+    <div className="flex h-screen flex-col items-center justify-center bg-background">
+      <Link href="/" className="mb-12 text-6xl font-bold text-primary">
+        StreamVerse
+      </Link>
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle>{title}</CardTitle>
