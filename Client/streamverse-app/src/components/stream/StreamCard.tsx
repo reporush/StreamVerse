@@ -24,7 +24,7 @@ export function StreamCard({ stream, className }: StreamCardProps) {
             alt={stream.title}
             width={400}
             height={225}
-            className="rounded-lg"
+            className="rounded-lg w-full h-auto"
           />
         </CardHeader>
         <CardContent className="h-24">

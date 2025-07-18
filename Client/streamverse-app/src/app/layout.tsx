@@ -6,7 +6,8 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "StreamVerse - Live Streaming Platform",
-  description: "Watch live streams, VODs, and chat with your favorite creators.",
+  description:
+    "Watch live streams, VODs, and chat with your favorite creators.",
   icons: {
     icon: "/favicon.ico",
     apple: "/logo.svg",
@@ -20,9 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
-      <body className={inter.className}>
-        {children}
-      </body>
+      <body className={inter.className}>{children}</body>
     </html>
   );
 }

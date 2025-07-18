@@ -6,11 +6,10 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { AuthCard } from "@/components/auth/AuthCard";
 import { GoogleButton } from "@/components/auth/GoogleButton";
-import { handleRegister } from "@/lib/auth";
+import { handleLogin } from "@/lib/auth";
 import { Loader2 } from "lucide-react";
 
-export default function RegisterPage() {
-  const [username, setUsername] = useState("");
+export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -18,31 +17,19 @@ export default function RegisterPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    await handleRegister({ username, email, password });
+    await handleLogin({ email, password });
     setIsLoading(false);
   };
 
   return (
     <AuthCard
-      title="Register"
-      description="Create an account to start streaming."
-      footerText="Already have an account?"
-      footerLink="/auth/login"
-      footerLinkText="Login"
+      title="Login"
+      description="Welcome back! Please enter your details."
+      footerText="Don't have an account?"
+      footerLink="/register"
+      footerLinkText="Register"
     >
       <form className="grid gap-4" onSubmit={handleSubmit}>
-        <div className="grid gap-2">
-          <Label htmlFor="username" className="text-muted-foreground">
-            Username
-          </Label>
-          <Input
-            id="username"
-            placeholder="Your username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            disabled={isLoading}
-          />
-        </div>
         <div className="grid gap-2">
           <Label htmlFor="email" className="text-muted-foreground">
             Email
@@ -70,7 +57,7 @@ export default function RegisterPage() {
         </div>
         <Button type="submit" className="w-full" disabled={isLoading}>
           {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-          Create Account
+          Login
         </Button>
         <GoogleButton />
       </form>

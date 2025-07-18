@@ -208,7 +208,8 @@ This section details each page (route) of the application.
 
     Layout & Components:
 
-        This page must use a two-column layout on desktop screens.
+        This page must use a two-column layout on desktop screens. But this
+        section still have the Side Bar and Navigation bar from the home page.
 
         Left Column (70% width): The video player section.
 
@@ -245,3 +246,27 @@ This section details each page (route) of the application.
             An Input field at the bottom for the user to type their message.
 
             A Button to send the message, which calls the send method on the WebSocket instance.
+
+This section provides instructions for AI agents working on the StreamVerse codebase.
+
+## Commands
+
+- **Build:** `npm run build`
+- **Lint:** `npm run lint`
+- **Run (Dev):** `npm run dev`
+- **Test:** No test command found. Use `npm run lint` and `npm run build` to check for errors.
+
+## Code Style
+
+- **Framework:** Next.js with App Router.
+- **Language:** TypeScript. Use strict typing.
+- **Styling:** Tailwind CSS and shadcn/ui components.
+- **Imports:** Use absolute paths from `src/`.
+- **Formatting:** Follow `eslint-config-next` rules.
+- **Naming:**
+  - Components: `PascalCase` (e.g., `StreamCard.tsx`).
+  - Variables/Functions: `camelCase`.
+- **Error Handling:** Use `try...catch` for async operations.
+- **API:** Centralize API calls. Use environment variables for the base URL.
+- **Auth:** Use the provided `AuthContext` for user data.
+- **Dependencies:** Use `npm` to manage packages.

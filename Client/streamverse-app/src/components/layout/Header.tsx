@@ -1,4 +1,3 @@
-
 import Image from "next/image";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -26,10 +25,10 @@ export function Header() {
           </div>
         ) : (
           <div className="flex items-center gap-4">
-            <Link href="/auth/login">
+            <Link href="/login">
               <Button variant="ghost">Login</Button>
             </Link>
-            <Link href="/auth/register">
+            <Link href="/register">
               <Button>Register</Button>
             </Link>
           </div>
