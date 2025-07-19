@@ -1,15 +1,11 @@
-package org.rushrepo.backend.model;
-
-import org.rushrepo.backend.enums.*;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+package org.rushrepo.backend.dto;
 
 import java.time.Instant;
 import java.util.List;
 
-@Document(collection = "videos")
-public class Video {
-    @Id
+import org.rushrepo.backend.enums.VideoStatus;
+
+public class VideoDto {
     private String id;
     private String title;
     private String description;
@@ -25,8 +21,8 @@ public class Video {
     private Instant updatedAt;
 
 
-    public Video(String id, String title, String description, String channelId, String videoUrl, String thumbnailUrl,
-            List<String> tags, VideoStatus status, long viewCount, long likes, long dislikes, Instant createdAt,
+    public VideoDto(String id, String title, String description, String channelId, String videoUrl, String thumbnailUrl,
+            List<String> tags, VideoStatus status, long viewCount, long likes, long dislikes, Instant publishedAt,
             Instant updatedAt) {
         this.id = id;
         this.title = title;
@@ -39,7 +35,7 @@ public class Video {
         this.viewCount = viewCount;
         this.likes = likes;
         this.dislikes = dislikes;
-        this.publishedAt = createdAt;
+        this.publishedAt = publishedAt;
         this.updatedAt = updatedAt;
     }
 
@@ -173,6 +169,7 @@ public class Video {
         this.updatedAt = updatedAt;
     }
 
+    
 
     
 }
