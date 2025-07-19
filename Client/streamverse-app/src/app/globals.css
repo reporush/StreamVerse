@@ -4,7 +4,7 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --animate-scroll: scroll 40s linear infinite;
+  --animate-scroll: scroll 20s linear infinite;
   @keyframes scroll {
     to {
       transform: translate(calc(-50% - 0.5rem));
