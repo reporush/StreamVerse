@@ -16,7 +16,7 @@ export function StreamCard({ stream, className }: StreamCardProps) {
   return (
     <Link href={`/stream/${stream.channelName}`}>
       <Card
-        className={`w-full max-w-sm transition-transform hover:-translate-y-2 hover:scale-105 ${className}`}
+        className={` transition-transform hover:-translate-y-2 hover:scale-105 ${className}`}
       >
         <CardHeader>
           <Image
