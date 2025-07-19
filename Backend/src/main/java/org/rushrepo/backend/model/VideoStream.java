@@ -6,7 +6,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.Instant;
 
 @Document(collection = "streams")
-public class Stream {
+public class VideoStream {
     @Id
     private String id;
     private String streamKey;
