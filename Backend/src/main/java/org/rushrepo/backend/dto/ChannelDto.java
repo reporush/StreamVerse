@@ -1,73 +1,68 @@
 package org.rushrepo.backend.dto;
 
 import java.time.Instant;
-import java.util.Set;
+
+import org.bson.types.ObjectId;
 
 public class ChannelDto {
-    private String id;
-    private String channelName;
+    private final ObjectId id;
+    private ObjectId userId;
+    private String name;
     private String description;
-    private String userId;
-    private Set<String> subscriberIds;
-    private Instant createdAt;
 
-    public ChannelDto(String id, String channelName, String description, String userId, Set<String> subscriberIds, Instant createdAt) {
+    private boolean isLive;
+    private long followersCount;
+    private Instant createdAt;
+    public ChannelDto(ObjectId id, ObjectId userId, String name, String description, boolean isLive,
+            long followersCount, Instant createdAt) {
         this.id = id;
-        this.channelName = channelName;
-        this.description = description;
         this.userId = userId;
-        this.subscriberIds = subscriberIds;
+        this.name = name;
+        this.description = description;
+        this.isLive = isLive;
+        this.followersCount = followersCount;
         this.createdAt = createdAt;
     }
-
-    public String getId() {
+    public ObjectId getId() {
         return id;
     }
-
-    public void setId(String id) {
-        this.id = id;
+    public ObjectId getUserId() {
+        return userId;
     }
-
-    public String getChannelName() {
-        return channelName;
+    public void setUserId(ObjectId userId) {
+        this.userId = userId;
     }
-
-    public void setChannelName(String channelName) {
-        this.channelName = channelName;
+    public String getName() {
+        return name;
     }
-
+    public void setName(String name) {
+        this.name = name;
+    }
     public String getDescription() {
         return description;
     }
-
     public void setDescription(String description) {
         this.description = description;
     }
-
-    public String getUserId() {
-        return userId;
+    public boolean isLive() {
+        return isLive;
     }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setLive(boolean isLive) {
+        this.isLive = isLive;
     }
-
-    public Set<String> getSubscriberIds() {
-        return subscriberIds;
+    public long getFollowersCount() {
+        return followersCount;
     }
-
-    public void setSubscriberIds(Set<String> subscriberIds) {
-        this.subscriberIds = subscriberIds;
+    public void setFollowersCount(long followersCount) {
+        this.followersCount = followersCount;
     }
-
     public Instant getCreatedAt() {
         return createdAt;
     }
-
     public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
     }
 
-
+   
     
 }

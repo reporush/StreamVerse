@@ -3,53 +3,59 @@ package org.rushrepo.backend.model;
 import java.time.Instant;
 import java.util.List;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
+// import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import org.rushrepo.backend.enums.AuthProvider;
 
 @Document(collection = "users")
 public class User {
     @Id
-    private String id;
-    private String fullName;
+    private final ObjectId id;
+
     private String username;
     private String email;
-    private String password; // Hashed
-    private String profilePictureUrl;
+    
+    private String password; // hashed
+    private AuthProvider authProvider;
+
+    private String displayName;
+    private String profileImageUrl;
 
     private List<String> subscribeToChannelIds;
-
     private List<String> watchHistoryVideosIds;
-
     private Instant createdAt;
     private Instant updatedAt;
 
-    public User(String id, String fullName, String username, String email, String password, String profilePictureUrl, List<String> subscribeToChannelIds, List<String> watchHistoryVideosIds, Instant createdAt, Instant updatedAt) {
+    
+
+    public User(ObjectId id, String username, String email, String password) {
         this.id = id;
-        this.fullName = fullName;
         this.username = username;
         this.email = email;
         this.password = password;
-        this.profilePictureUrl = profilePictureUrl;
+    }
+
+    public User(ObjectId id, String username, String email, String password, AuthProvider authProvider, String displayName, String profileImageUrl,
+            List<String> subscribeToChannelIds, List<String> watchHistoryVideosIds, Instant createdAt,
+            Instant updatedAt) {
+        this.id = id;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.authProvider = authProvider;
+        this.displayName = displayName;
+        this.profileImageUrl = profileImageUrl;
         this.subscribeToChannelIds = subscribeToChannelIds;
         this.watchHistoryVideosIds = watchHistoryVideosIds;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
 
-    public String getId() {
+    public ObjectId getId() {
         return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
     }
 
     public String getUsername() {
@@ -76,12 +82,28 @@ public class User {
         this.password = password;
     }
 
-    public String getProfilePictureUrl() {
-        return profilePictureUrl;
+    public AuthProvider getAuthProvider() {
+        return authProvider;
     }
 
-    public void setProfilePictureUrl(String profilePictureUrl) {
-        this.profilePictureUrl = profilePictureUrl;
+    public void setAuthProvider(AuthProvider authProvider) {
+        this.authProvider = authProvider;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
+    public String getProfileImageUrl() {
+        return profileImageUrl;
+    }
+
+    public void setProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
     }
 
     public List<String> getSubscribeToChannelIds() {
@@ -115,9 +137,4 @@ public class User {
     public void setUpdatedAt(Instant updatedAt) {
         this.updatedAt = updatedAt;
     }
-
-
-    
-
-    
 }

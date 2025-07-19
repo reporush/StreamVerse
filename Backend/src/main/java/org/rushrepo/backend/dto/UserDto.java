@@ -1,28 +1,43 @@
 package org.rushrepo.backend.dto;
 
 import java.time.Instant;
+import java.util.List;
+
+import org.bson.types.ObjectId;
+import org.rushrepo.backend.enums.AuthProvider;
 
 public class UserDto{
-    private String id;
+    private final ObjectId id;
+
     private String username;
     private String email;
-    private String channelId;
+    private AuthProvider authProvider;
+
+    private String displayName;
+    private String profileImageUrl;
+
+    private List<String> subscribeToChannelIds;
+    private List<String> watchHistoryVideosIds; 
     private Instant createdAt;
+    private Instant updatedAt;
     
-    public UserDto(String id, String username, String email, String channelId, Instant createdAt) {
+    public UserDto(ObjectId id, String username, String email, AuthProvider authProvider, String displayName,
+            String profileImageUrl, List<String> subscribeToChannelIds, List<String> watchHistoryVideosIds,
+            Instant createdAt, Instant updatedAt) {
         this.id = id;
         this.username = username;
         this.email = email;
-        this.channelId = channelId;
+        this.authProvider = authProvider;
+        this.displayName = displayName;
+        this.profileImageUrl = profileImageUrl;
+        this.subscribeToChannelIds = subscribeToChannelIds;
+        this.watchHistoryVideosIds = watchHistoryVideosIds;
         this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
-    public String getId() {
+    public ObjectId getId() {
         return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getUsername() {
@@ -41,12 +56,44 @@ public class UserDto{
         this.email = email;
     }
 
-    public String getChannelId() {
-        return channelId;
+    public AuthProvider getAuthProvider() {
+        return authProvider;
     }
 
-    public void setChannelId(String channelId) {
-        this.channelId = channelId;
+    public void setAuthProvider(AuthProvider authProvider) {
+        this.authProvider = authProvider;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
+    public String getProfileImageUrl() {
+        return profileImageUrl;
+    }
+
+    public void setProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
+    }
+
+    public List<String> getSubscribeToChannelIds() {
+        return subscribeToChannelIds;
+    }
+
+    public void setSubscribeToChannelIds(List<String> subscribeToChannelIds) {
+        this.subscribeToChannelIds = subscribeToChannelIds;
+    }
+
+    public List<String> getWatchHistoryVideosIds() {
+        return watchHistoryVideosIds;
+    }
+
+    public void setWatchHistoryVideosIds(List<String> watchHistoryVideosIds) {
+        this.watchHistoryVideosIds = watchHistoryVideosIds;
     }
 
     public Instant getCreatedAt() {
@@ -55,6 +102,14 @@ public class UserDto{
 
     public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public Instant getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Instant updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     
