@@ -247,6 +247,58 @@ This section details each page (route) of the application.
 
             A Button to send the message, which calls the send method on the WebSocket instance.
 
+4.6. Profile Page (/profile)
+
+    Route: /profile
+
+    Purpose: Allow a user to view and update their profile information.
+
+    Security: This is a protected route. Unauthorized users must be redirected to /login.
+
+    Data Fetching:
+
+        This is a Client Component ('use client').
+
+        It must fetch the user's current data from the secure GET /api/auth/me endpoint.
+
+    Layout & Components:
+
+        Display a page title: "My Profile".
+
+        Use a Card component to contain the profile form.
+
+        Profile Picture:
+
+            Display a large Avatar component at the top of the card showing the user's current profile picture.
+
+            Include a "Change Picture" Button (functionality can be deferred post-MVP).
+
+        Profile Form:
+
+            Username: An Input field pre-filled with the user's current username.
+
+            Email: A read-only Input field displaying the user's email address (cannot be changed).
+
+        Card Footer:
+
+            A "Save Changes" Button to submit the form.
+
+    User Interaction & Logic:
+
+        The "Save Changes" button should be disabled by default and only enabled when the user has made changes to the form.
+
+        On click, the button should show a loading state and send a PUT or PATCH request to /api/auth/me with the updated profile data (e.g., the new username).
+
+        On Success:
+
+            Use the useToast hook to show a success message: "Profile updated successfully!".
+
+            Update the user data in the global AuthContext to reflect the changes immediately in the UI (e.g., the header avatar).
+
+        On Error:
+
+            Display an Alert component with the error message from the API.
+
 This section provides instructions for AI agents working on the StreamVerse codebase.
 
 ## Commands
