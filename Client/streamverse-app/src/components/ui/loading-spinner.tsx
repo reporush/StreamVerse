@@ -1,14 +1,18 @@
+import { cn } from "@/lib/utils";
+
 const LoadingSpinner = ({
   width = 32,
   height = 32,
+  className,
 }: {
   width?: number;
   height?: number;
+  className?: string;
 }) => {
   return (
     <div className="flex items-center justify-center">
       <svg
-        className={`animate-spin  text-primary`}
+        className={cn("animate-spin text-primary", className)}
         style={{ width: width, height: height }}
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
