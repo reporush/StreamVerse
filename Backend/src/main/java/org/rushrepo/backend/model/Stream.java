@@ -15,7 +15,7 @@ public class Stream {
     private String categoryId;
     private String categoryName;
     private String vodUrl;
-    private Double peakViewership;
+    private long peakViewership;
     private Instant startedAt;
 
     // Harus ada koneksi ke user
