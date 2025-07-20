@@ -1,8 +1,8 @@
 package org.rushrepo.backend.repository;
 
-import org.rushrepo.backend.model.ChatMessage;
+import org.rushrepo.backend.model.Chat;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface ChatMessageRepository extends MongoRepository<ChatMessage, String> {
+public interface ChatMessageRepository extends MongoRepository<Chat, String> {
     
 }
