@@ -1,22 +1,19 @@
-package org.rushrepo.backend.model;
+package org.rushrepo.backend.dto;
 
 import java.time.Instant;
 import java.util.List;
 
 import org.bson.types.ObjectId;
-import org.rushrepo.backend.enums.*;
-import org.springframework.data.annotation.Id;
-// import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
+import org.rushrepo.backend.enums.StreamStatus;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
-@Data 
+@Data
+@RequiredArgsConstructor
 @AllArgsConstructor
-@Document(collection = "video_streams")
-public class VideoStream {
-    @Id
+public class VideoStreamDto {
     private final ObjectId id;
     private ObjectId channelId;
 
@@ -24,9 +21,10 @@ public class VideoStream {
     private String description;
     private String streamKey;
     private StreamStatus streamStatus; 
-    private String vodUrl;
+    private String thumbnailUrl;
     private List<String> tags;
-    private long peakViewership;
+    
     private Instant startTime;
     private Instant endTime;
+    private long peakViewersCount;
 }

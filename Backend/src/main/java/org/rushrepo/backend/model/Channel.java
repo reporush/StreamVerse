@@ -9,15 +9,17 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-@Data 
+@Data
 @AllArgsConstructor
-@Document(collection = "chat_messages")
-public class Chat {
+@Document(collection = "channels")
+public class Channel {
     @Id
     private final ObjectId id;
-    private ObjectId streamId;
     private ObjectId userId;
-    private String username;
-    private String message;
-    private Instant timestamp;
+    private String name;
+    private String description;
+
+    private boolean isLive;
+    private long followersCount;
+    private Instant createdAt;
 }
