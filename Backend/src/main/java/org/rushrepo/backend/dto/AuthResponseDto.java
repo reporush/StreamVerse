@@ -9,7 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 
 @Data @RequiredArgsConstructor @AllArgsConstructor @Builder 
-public class AuthResponse {
+public class AuthResponseDto {
     private String token;
     private String tokenType;  
     private Date expiresIn;     

@@ -1,8 +1,8 @@
 package org.rushrepo.backend.controller;
 
-import org.rushrepo.backend.dto.AuthResponse;
-import org.rushrepo.backend.dto.LoginRequest;
-import org.rushrepo.backend.dto.RegisterRequest;
+import org.rushrepo.backend.dto.AuthResponseDto;
+import org.rushrepo.backend.dto.LoginRequestDto;
+import org.rushrepo.backend.dto.RegisterRequestDto;
 import org.rushrepo.backend.dto.UserDto;
 import org.rushrepo.backend.service.JwtService;
 import org.rushrepo.backend.service.UserService;
@@ -30,19 +30,19 @@ public class AuthController {
     private final JwtService jwtService;
 
     @PostMapping("/login")
-    public AuthResponse createAuthenticationToken(@RequestBody LoginRequest loginRequest) throws Exception {
+    public AuthResponseDto createAuthenticationToken(@RequestBody LoginRequestDto loginRequest) throws Exception {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
         );
         final UserDetails userDetails = userDetailsService.loadUserByUsername(loginRequest.getUsername());
         final String jwt = jwtService.generateToken(userDetails);
 
-        return new AuthResponse(jwt, "Bearer", jwtService.extractExpiration(jwt));
+        return new AuthResponseDto(jwt, "Bearer", jwtService.extractExpiration(jwt));
     }
     
     
     @PostMapping("/register")
-    public ResponseEntity<UserDto> register(@RequestBody RegisterRequest request) {
+    public ResponseEntity<UserDto> register(@RequestBody RegisterRequestDto request) {
         UserDto newUser = userService.registerUser(request);
         return new ResponseEntity<>(newUser, HttpStatus.CREATED);
     }

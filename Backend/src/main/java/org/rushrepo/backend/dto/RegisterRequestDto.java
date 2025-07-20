@@ -8,7 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data @NoArgsConstructor @AllArgsConstructor
-public class RegisterRequest {  
+public class RegisterRequestDto {  
     private String username;
     @Email private String email;
     @NotBlank @Size(min = 8) private String password;

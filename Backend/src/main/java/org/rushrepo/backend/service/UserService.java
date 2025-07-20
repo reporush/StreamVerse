@@ -4,7 +4,7 @@ import java.time.Instant;
 import java.time.Clock;
 
 import org.bson.types.ObjectId;
-import org.rushrepo.backend.dto.RegisterRequest;
+import org.rushrepo.backend.dto.RegisterRequestDto;
 import org.rushrepo.backend.dto.UserDto;
 import org.rushrepo.backend.model.User;
 import org.rushrepo.backend.repository.UserRepository;
@@ -24,7 +24,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final Clock clock;
 
-    public UserDto registerUser(RegisterRequest request) {
+    public UserDto registerUser(RegisterRequestDto request) {
         if (userRepository.findByUsername(request.getUsername()).isPresent()) {
             throw new IllegalArgumentException("Username sudah digunakan!");
         }
