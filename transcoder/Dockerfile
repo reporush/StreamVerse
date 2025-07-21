@@ -60,6 +60,7 @@ COPY --from=builder /usr/local/nginx /usr/local/nginx
 COPY nginx.conf /usr/local/nginx/conf/nginx.conf
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
+RUN mkdir -p /var/www/hls
 # Expose RTMP (1935) and HTTP (8080 for HLS playback)
 
 EXPOSE 1935 8080
