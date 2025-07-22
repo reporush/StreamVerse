@@ -1,0 +1,11 @@
+meta {
+  name: Get Current User
+  type: http
+  seq: 1
+}
+
+get {
+  url: http://localhost:6969/api/users/me
+  body: none
+  auth: inherit
+}
