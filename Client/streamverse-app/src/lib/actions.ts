@@ -1,119 +1,70 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 import { z } from "zod";
 
-export type FormState = {
+export interface FormState {
   success: boolean;
-  message?: string;
+  message: string;
   errors?: {
     username?: string[];
     email?: string[];
     password?: string[];
   };
-};
-
-// Mock API functions
-async function mockApiLogin(data: FormData) {
-  const email = data.get("email");
-  console.log("Attempting login for:", email);
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-  if (email === "test@example.com") {
-    return { ok: true, json: () => ({ message: "Login successful" }) };
-  } else {
-    return {
-      ok: false,
-      status: 401,
-      json: () => ({ message: "Invalid credentials" }),
-    };
-  }
 }
 
-async function mockApiRegister(data: FormData) {
-  const email = data.get("email");
-  console.log("Attempting registration for:", email);
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-  if (email === "exists@example.com") {
-    return {
-      ok: false,
-      status: 409,
-      json: () => ({ message: "User with this email already exists" }),
-    };
-  } else {
-    return { ok: true, json: () => ({ message: "Registration successful" }) };
-  }
-}
-
-const LoginSchema = z.object({
-  email: z.email("Invalid email address."),
-  password: z.string().min(1, "Password cannot be empty."),
-});
-
+// Define the Zod schema for server-side validation
 const RegisterSchema = z.object({
   username: z.string().min(3, "Username must be at least 3 characters."),
-  email: z.email("Invalid email address."),
+  email: z.string().email("Please enter a valid email address."),
   password: z.string().min(6, "Password must be at least 6 characters."),
 });
 
-export async function login(
-  _: FormState,
-  formData: FormData,
-): Promise<FormState> {
-  const validatedFields = LoginSchema.safeParse(
-    Object.fromEntries(formData.entries()),
-  );
-
-  if (!validatedFields.success) {
-    return {
-      success: false,
-      errors: validatedFields.error.flatten().fieldErrors,
-    };
-  }
-
-  try {
-    const response = await mockApiLogin(formData);
-    if (!response.ok) {
-      const errorData = response.json();
-      return { success: false, message: errorData.message || "Login failed." };
-    }
-  } catch (error) {
-    console.error("Login action error:", error);
-    return { success: false, message: "An unexpected error occurred." };
-  }
-
-  revalidatePath("/");
-  redirect("/profile");
-}
-
 export async function register(
-  _: FormState,
+  previousState: FormState,
   formData: FormData,
 ): Promise<FormState> {
-  const validatedFields = RegisterSchema.safeParse(
-    Object.fromEntries(formData.entries()),
-  );
+  // 1. Extract form data
+  const data = Object.fromEntries(formData.entries());
 
+  const validatedFields = RegisterSchema.safeParse(data);
+
+  // 3. If validation fails, return errors to the form
   if (!validatedFields.success) {
+    const fieldErrors = validatedFields.error.flatten().fieldErrors;
     return {
       success: false,
-      errors: validatedFields.error.flatten().fieldErrors,
+      message: "Please correct the errors below.",
+      errors: fieldErrors,
     };
   }
 
   try {
-    const response = await mockApiRegister(formData);
+    const response = await fetch("http://localhost:6969/api/auth/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(validatedFields.data),
+    });
+
+    // 5. Handle non-successful responses from the API
     if (!response.ok) {
-      const errorData = response.json();
+      const errorData = await response.json();
       return {
         success: false,
-        message: errorData.message || "Registration failed.",
+        message: errorData.message || "Registration failed on the server.",
+        errors: {},
       };
     }
-  } catch (error) {
-    console.error("Register action error:", error);
-    return { success: false, message: "An unexpected error occurred." };
-  }
 
-  redirect("/login?registered=true");
+    return {
+      success: true,
+      message: "Account created successfully! You can now log in.",
+      errors: {},
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: "An unexpected error occurred. Please try again later.",
+      errors: {},
+    };
+  }
 }

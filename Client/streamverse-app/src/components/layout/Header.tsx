@@ -13,15 +13,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
 
 export function Header() {
   const { isAuthenticated, user, logout } = useAuth();
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
 
   return (
     <header className="sticky top-0 z-10 flex h-16 items-center justify-between border-b bg-card px-4 md:px-6">
@@ -30,7 +24,8 @@ export function Header() {
         <span className="text-2xl font-bold text-primary">StreamVerse</span>
       </Link>
       <nav>
-        {isClient && isAuthenticated && user ? (
+        {isAuthenticated && user ? (
+          // --- RENDERED WHEN USER IS LOGGED IN ---
           <div className="flex items-center gap-4">
             <Link href="/dashboard">
               <Button variant="ghost">Dashboard</Button>
@@ -38,8 +33,9 @@ export function Header() {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Avatar className="cursor-pointer">
+                  {/* UPDATED: Correctly uses profileImageUrl from the user object */}
                   <AvatarImage
-                    src={user.profilePictureUrl || ""}
+                    src={user.profileImageUrl}
                     alt={`@${user.username}`}
                   />
                   <AvatarFallback>
@@ -58,6 +54,7 @@ export function Header() {
             </DropdownMenu>
           </div>
         ) : (
+          // --- RENDERED WHEN USER IS LOGGED OUT ---
           <div className="flex items-center gap-4">
             <Link href="/login">
               <Button variant="ghost">Login</Button>

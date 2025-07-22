@@ -1,24 +1,50 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useState, useEffect } from "react";
+import { useAuth } from "@/lib/AuthContext"; // 1. Import your useAuth hook
+
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { AuthCard } from "@/components/auth/AuthCard";
 import { GoogleButton } from "@/components/auth/GoogleButton";
-import { login, FormState } from "@/lib/actions";
 import { SubmitButton } from "@/components/auth/SubmitButton";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-
-const initialState: FormState = {
-  success: false,
-  message: "",
-  errors: {},
-};
+import { useRouter } from "next/navigation";
+import LoadingSpinner from "@/components/ui/loading-spinner";
 
 export default function LoginPage() {
-  const [state, formAction] = useActionState(login, initialState);
-  const [email, setEmail] = useState("");
+  const { login, isAuthenticated, loading } = useAuth();
+  const router = useRouter();
+
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!loading && isAuthenticated) {
+      router.push("/");
+    }
+  }, [isAuthenticated, loading, router]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+
+    try {
+      await login(username, password);
+      window.location.href = "/";
+    } catch (err) {
+      setError("Invalid username or password. Please try again.");
+    }
+  };
+
+  if (loading || isAuthenticated) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <LoadingSpinner width={64} height={64} />
+      </div>
+    );
+  }
 
   return (
     <AuthCard
@@ -28,31 +54,26 @@ export default function LoginPage() {
       footerLink="/register"
       footerLinkText="Register"
     >
-      <form className="grid gap-4" action={formAction}>
-        {state.message && (
-          <Alert variant={state.success ? "default" : "destructive"}>
-            <AlertTitle>
-              {state.success ? "Success" : "Login Failed"}
-            </AlertTitle>
-            <AlertDescription>{state.message}</AlertDescription>
+      <form className="grid gap-4" onSubmit={handleSubmit}>
+        {error && (
+          <Alert variant="destructive">
+            <AlertTitle>Login Failed</AlertTitle>
+            <AlertDescription>{error}</AlertDescription>
           </Alert>
         )}
         <div className="grid gap-2">
           <Label htmlFor="email" className="text-muted-foreground">
-            Email
+            Username
           </Label>
           <Input
-            id="email"
-            name="email"
-            type="email"
-            placeholder="john_doe@example.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            id="username"
+            name="username"
+            type="text"
+            placeholder="john_doe"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             required
           />
-          {state.errors?.email && (
-            <p className="text-sm text-red-500">{state.errors.email[0]}</p>
-          )}
         </div>
         <div className="grid gap-2">
           <Label htmlFor="password" className="text-muted-foreground">
@@ -66,9 +87,6 @@ export default function LoginPage() {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          {state.errors?.password && (
-            <p className="text-sm text-red-500">{state.errors.password[0]}</p>
-          )}
         </div>
         <SubmitButton className="w-full">Login</SubmitButton>
         <GoogleButton />
