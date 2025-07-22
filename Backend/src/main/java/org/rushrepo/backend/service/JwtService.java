@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+import org.rushrepo.backend.model.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -30,16 +31,16 @@ public class JwtService {
     return claimsResolver.apply(claims);
   }
 
-  public String generateToken(UserDetails userDetails) {
+  public String generateToken(User userDetails) {
     return generateToken(new HashMap<>(), userDetails);
   }
 
-  public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
+  public String generateToken(Map<String, Object> extraClaims, User userDetails) {
     return buildToken(extraClaims, userDetails, jwtExpiration);
   }
 
-  private String buildToken(
-      Map<String, Object> extraClaims, UserDetails userDetails, long expiration) {
+  private String buildToken(Map<String, Object> extraClaims, User userDetails, long expiration) {
+
     return Jwts.builder()
         .claims(extraClaims)
         .subject(userDetails.getUsername())
@@ -60,6 +61,10 @@ public class JwtService {
 
   public Date extractExpiration(String token) {
     return extractClaim(token, Claims::getExpiration);
+  }
+
+  public Date extractIssuedAt(String token) {
+    return extractClaim(token, Claims::getIssuedAt);
   }
 
   private Claims extractAllClaims(String token) {

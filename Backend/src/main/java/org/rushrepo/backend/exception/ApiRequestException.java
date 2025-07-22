@@ -1,12 +1,14 @@
 package org.rushrepo.backend.exception;
 
+import lombok.Getter;
+import org.springframework.http.HttpStatus;
+
+@Getter
 public class ApiRequestException extends RuntimeException {
+  private final HttpStatus httpStatus;
 
-  public ApiRequestException(String message) {
+  public ApiRequestException(String message, HttpStatus httpStatus) {
     super(message);
-  }
-
-  public ApiRequestException(String message, Throwable cause) {
-    super(message, cause);
+    this.httpStatus = httpStatus;
   }
 }

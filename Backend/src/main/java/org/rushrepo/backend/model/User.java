@@ -9,6 +9,7 @@ import lombok.Builder;
 import lombok.Data;
 import org.bson.types.ObjectId;
 import org.rushrepo.backend.enums.AuthProvider;
+import org.rushrepo.backend.enums.UserRole;
 import org.springframework.data.annotation.Id;
 // import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -23,12 +24,16 @@ public class User implements UserDetails {
 
   private String username;
   private String email;
+  @Builder.Default private UserRole role = UserRole.USER;
 
   private String password; // hashed
-  private AuthProvider authProvider;
+  @Builder.Default private AuthProvider authProvider = AuthProvider.LOCAL;
 
   private String displayName;
-  private String profileImageUrl;
+
+  @Builder.Default
+  private String profileImageUrl =
+      "https://ih1.redbubble.net/image.1724118564.3606/fposter,small,wall_texture,square_product,600x600.u3.jpg";
 
   @Builder.Default private List<String> subscribeToChannelIds = new ArrayList<>();
 
@@ -63,4 +68,3 @@ public class User implements UserDetails {
     return true;
   }
 }
-
