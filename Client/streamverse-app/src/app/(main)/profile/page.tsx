@@ -3,6 +3,9 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/AuthContext";
+import axios from "axios";
+import { toast } from "sonner";
+
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -15,63 +18,52 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { toast } from "sonner";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import LoadingSpinner from "@/components/ui/loading-spinner";
 
-// TODO: Fetch user data from /api/auth/me and replace this dummy data
-const dummyUser = {
-  username: "dian",
-  email: "dian@example.com",
-  profilePicture: "https://github.com/shadcn.png",
-};
-
 export default function ProfilePage() {
   const router = useRouter();
-  const { isAuthenticated } = useAuth();
-  const [username, setUsername] = useState(dummyUser.username);
+  // Get user and the new updateUser function from context
+  const { user, loading, updateUser } = useAuth();
+
+  const [displayName, setDisplayName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!isAuthenticated) {
-      toast.error("You must be logged in to view this page.");
-      const timer = setTimeout(() => {
-        router.push("/login");
-      }, 2000);
-      return () => clearTimeout(timer);
+    // Wait until the initial loading is done
+    if (!loading && !user) {
+      router.push("/login");
     }
-  }, [isAuthenticated, router]);
+    if (user) {
+      setDisplayName(user.displayName);
+    }
+  }, [user, loading, router]);
 
   const handleSaveChanges = async () => {
     setIsLoading(true);
     setError(null);
-
-    // TODO: Implement API call to PATCH /api/auth/me
-    console.log("Saving changes for username:", username);
-
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-
-    // Example success/error handling
-    const success = Math.random() > 0.3; // Simulate success/failure
-    if (success) {
+    try {
+      // API call to update the user profile
+      // TODO
+      // const response = await axios.put("http://localhost:6969/api/users/me", {
+      //   displayName: displayName,
+      // });
+      // Update the global user state with the returned data
+      // updateUser(response.data);
       toast.success("Your profile has been updated.");
-      // TODO: Update user data in AuthContext
-    } else {
+    } catch (err) {
       setError("Failed to update profile. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
-
-    setIsLoading(false);
   };
 
-  if (!isAuthenticated) {
+  // Display a loading screen while checking for a session
+  if (loading || !user) {
     return (
-      <div className="flex flex-col justify-center items-center h-screen">
+      <div className="flex flex-col justify-center items-center h-full">
         <LoadingSpinner width={128} height={128} />
-        <p className="mt-4 text-muted-foreground text-4xl">
-          Redirecting to login...
-        </p>
       </div>
     );
   }
@@ -89,11 +81,11 @@ export default function ProfilePage() {
           <div className="flex justify-center">
             <Avatar className="h-24 w-24">
               <AvatarImage
-                src={dummyUser.profilePicture}
-                alt={`@${dummyUser.username}`}
+                src={user.profileImageUrl}
+                alt={`@${user.username}`}
               />
               <AvatarFallback>
-                {dummyUser.username.charAt(0).toUpperCase()}
+                {user.username.charAt(0).toUpperCase()}
               </AvatarFallback>
             </Avatar>
           </div>
@@ -103,23 +95,36 @@ export default function ProfilePage() {
               <AlertDescription>{error}</AlertDescription>
             </Alert>
           )}
+
+          {/* Display Name (Editable) */}
           <div className="space-y-2">
-            <Label htmlFor="username">Username</Label>
+            <Label htmlFor="displayName">Display Name</Label>
             <Input
-              id="username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              id="displayName"
+              value={displayName}
+              onChange={(e) => setDisplayName(e.target.value)}
             />
           </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="username">Username</Label>
+            <Input id="username" value={user.username} readOnly disabled />
+          </div>
+
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
-            <Input id="email" value={dummyUser.email} readOnly disabled />
+            <Input id="email" value={user.email} readOnly disabled />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="role">Role</Label>
+            <Input id="role" value={user.role} readOnly disabled />
           </div>
         </CardContent>
         <CardFooter>
           <Button
             onClick={handleSaveChanges}
-            disabled={isLoading || username === dummyUser.username}
+            disabled={isLoading || displayName === user.displayName}
           >
             {isLoading ? "Saving..." : "Save Changes"}
           </Button>
